@@ -23,7 +23,7 @@ public class GameRunner extends JFrame {
     // resizes the game window to the preferred size of the Board
     pack();
     // set the title
-    setTitle("Pong");
+    setTitle("Snake");
     // Exit the game when you close the window
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     // put the window in the center of the screen
@@ -34,7 +34,7 @@ public class GameRunner extends JFrame {
     EventQueue.invokeLater(() -> {
       // TODO Auto-generated method stub
       JFrame ex = new GameRunner();
-      ex.setVisible(true);
+      ex.setVisible(true);  
     });
   }
 }

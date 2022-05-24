@@ -1,6 +1,7 @@
 package com.github.grhscompsci2.java2DGame;
 
 import javax.imageio.ImageIO;
+import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import java.awt.event.KeyEvent;
@@ -17,13 +18,14 @@ import java.awt.*;
  * they can draw and act here.
  */
 public class Board extends JPanel implements Runnable {
-  private final int DELAY = 25;
-  private final String BACKGROUND_FILE_NAME = "images/background.png";
+  private final int DELAY = 25000000;
+  private final String BACKGROUND_FILE_NAME = "images/background4.png";
   private BufferedImage background;
   private Thread animator;
 
   // Initialize all of your actors here: players, enemies, obstacles, etc.
-  private Astronaut actor;
+  private Snake eater;
+  private Food apple;
 
   /**
    * Initialize the board
@@ -47,25 +49,8 @@ public class Board extends JPanel implements Runnable {
     setPreferredSize(getPreferredSize());
     setFocusable(true);
     // Initialize all actors below here
-    actor = new Astronaut();
-  }
-
-  /**
-   * This will step through all the bullets and have them act. If the bullet is
-   * out of bounds, it will remove them from the ArrayList.
-   */
-  public void manageBullets() {
-    ArrayList<Bullet> bullets = actor.getBullets();
-    for (int i = 0; i < bullets.size(); i++) {
-      Bullet bill = bullets.get(i);
-      bill.act();
-      // is Bill out of bounds?
-      if (bill.getX() < 0 || bill.getX() > Utility.gameWidth
-          || bill.getY() < 0 || bill.getY() > Utility.gameHeight) {
-        bullets.remove(i);
-      }
-    }
-
+    eater = new Snake();
+    apple = new Food();
   }
 
   /**
@@ -112,12 +97,28 @@ public class Board extends JPanel implements Runnable {
     g2d.drawImage(background, 0, 0, Utility.scale(background.getWidth()), Utility.scale(background.getHeight()), this);
 
     // call other drawing stuff here
-    actor.draw(g2d, this);
+    eater.draw(g2d, this);
+    apple.draw(g2d,this);
     // get the array list of bullets
-    ArrayList<Bullet> bullets = actor.getBullets();
+    ArrayList<SnakeBody> bodies = eater.getBodies();
+    
     // draw them all
-    for (Bullet bill : bullets) {
-      bill.draw(g2d, this);
+    for (SnakeBody body : bodies) {
+      switch (eater.getFileName()){
+        case "images/snake_head_up.png":
+        body = new SnakeBody(eater.getX(), eater.getY()+(eater.getHeight()/2), eater.getDX(), eater.getDY());
+          break;
+        case "images/snake_head_down.png":
+        body = new SnakeBody(eater.getX(), eater.getY()-(eater.getHeight()/2), eater.getDX(), eater.getDY());
+          break;
+        case "images/snake_head_left.png":
+        body = new SnakeBody(eater.getX()+(eater.getWidth()/2)/*+(bodies.size()*22)*/, eater.getY(), eater.getDX(), eater.getDY());
+          break;
+        case "images/snake_head_right.png":
+          body = new SnakeBody(eater.getX()-(eater.getWidth()/2)/*-(bodies.size()*22)*/, eater.getY(), eater.getDX(), eater.getDY());
+
+      }
+      body.draw(g2d, this);
     }
 
     // This method will ensure that the display is up to date
@@ -127,15 +128,16 @@ public class Board extends JPanel implements Runnable {
   /**
    * This method is called once per frame. This will allow us to advance the game
    * logic every frame so the actors move and react to input.
+   * @param deltaTime
    */
-  private void act() {
+  private void act(float deltaTime) {
     // Check for collisions between actors. Do it before they act so you can handle
     // death and other cases appropriately
     checkCollisions();
     // Have all of your actor attributes act here.
-    actor.act();
+    eater.act(deltaTime);
     // Manage your bullets
-    manageBullets();
+    //manageBullets();
   }
 
   /**
@@ -157,21 +159,23 @@ public class Board extends JPanel implements Runnable {
   @Override
   public void run() {
     long beforeTime;
-    long timeDiff;
+    long lastTime=System.nanoTime();;
+    long timeDiff=0;
     long sleep;
     while (true) {
       // Sample the current time before act() and repaint() are called
-      beforeTime = System.currentTimeMillis();
-
+      beforeTime = System.nanoTime();
+      
+      float deltaTime=(beforeTime-lastTime)/1000000000f;
       // update all actors
-      act();
+      act(deltaTime);
       // force a repaint
       repaint();
-
+      
       // how long did that take?
-      timeDiff = System.currentTimeMillis() - beforeTime;
+      timeDiff = System.nanoTime() - beforeTime;
       // we want to wait a consistent amount of time, so subtract timeDiff from DELAY
-      sleep = DELAY - timeDiff;
+      sleep = (DELAY - timeDiff)/1000000;
 
       // If we went too long, only wait 2 milliseconds for garbage collection.
       if (sleep < 0) {
@@ -187,6 +191,7 @@ public class Board extends JPanel implements Runnable {
         JOptionPane.showMessageDialog(this, msg, "Error",
             JOptionPane.ERROR_MESSAGE);
       }
+      lastTime=System.nanoTime();
     }
   }
 
@@ -213,6 +218,21 @@ public class Board extends JPanel implements Runnable {
      * }
      * }
      */
+    if (eater.getX() < 0 || eater.getX() > Utility.gameWidth
+          || eater.getY() < 0 || eater.getY() > Utility.gameHeight) {
+          eater.setSnakePos(50,50);
+          eater.setDX(0);
+          eater.setDY(0);
+        JOptionPane.showMessageDialog(this,"Game Over");
+      }
+
+    Rectangle r1 = eater.getBounds();
+    Rectangle r3= apple.getBounds();
+    if( r1.intersects(r3)){
+      apple.setInvisible(true);
+      eater.grow();
+      apple = new Food();
+    }
 
   }
 
@@ -231,7 +251,7 @@ public class Board extends JPanel implements Runnable {
     @Override
     public void keyReleased(KeyEvent e) {
       // add all objects that care about keys being released here
-      actor.keyReleased(e);
+      eater.keyPressed(e);
     }
 
     /**
@@ -243,7 +263,7 @@ public class Board extends JPanel implements Runnable {
     @Override
     public void keyPressed(KeyEvent e) {
       // add all objects that care about keys being pressed here
-      actor.keyPressed(e);
+      eater.keyPressed(e);
     }
   }
 }

@@ -7,6 +7,7 @@ import java.awt.Rectangle;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
+import javax.security.auth.x500.X500Principal;
 
 /**
  * This is the base class for anything that needs to move/act on the screen. You
@@ -78,10 +79,11 @@ public class Actor {
 
   /**
    * Update the position based on the change in x and y attributes
+   * @param deltaTime
    */
-  public void act() {
-    x += dx;
-    y += dy;
+  public void act(float deltaTime) {
+    x += dx*deltaTime;
+    y += dy*deltaTime;
   }
 
   /**
@@ -93,6 +95,10 @@ public class Actor {
     return x;
   }
 
+  public void setX(int x) {
+    this.x = x;
+  }
+
   /**
    * Returns the y attribute
    * 
@@ -100,6 +106,10 @@ public class Actor {
    */
   public int getY() {
     return y;
+  }
+
+  public void setY(int y) {
+    this.y = y;
   }
 
   /**
