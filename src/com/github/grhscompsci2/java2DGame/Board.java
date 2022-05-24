@@ -10,7 +10,6 @@ import com.github.grhscompsci2.java2DGame.actors.Food;
 import com.github.grhscompsci2.java2DGame.actors.Snake;
 import com.github.grhscompsci2.java2DGame.actors.Actor.Type;
 
-import java.awt.Graphics;
 import java.awt.image.*;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -230,24 +229,8 @@ public class Board extends JPanel {
    * small games.
    */
   public void checkCollisions() {
-
-    /*
-     * if (eater.getX() < 0 || eater.getX() > Utility.gameWidth
-     * || eater.getY() < 0 || eater.getY() > Utility.gameHeight) {
-     * eater.setSnakePos(50,50);
-     * eater.setDX(0);
-     * eater.setDY(0);
-     * JOptionPane.showMessageDialog(this,"Game Over");
-     * }
-     * 
-     * Rectangle r1 = eater.getBounds();
-     * Rectangle r3= apple.getBounds();
-     * if( r1.intersects(r3)){
-     * apple.setInvisible(true);
-     * eater.grow();
-     * apple = new Food();
-     */
-    Rectangle boundry = this.getBounds();
+    // check player against all other objects
+    Rectangle boundry = new Rectangle(Utility.gameWidth,Utility.gameHeight);
     for (Actor actor : Utility.castAndCrew) {
       if (!actor.isDead()) {
         if (!boundry.contains(actor.getBounds())) {
