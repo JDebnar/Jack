@@ -30,7 +30,7 @@ public abstract class Actor {
 
   // Store what type of actor this is
   public static enum Type {
-    player, enemy, bullet, obstacle
+    player, enemy, bullet, obstacle, food
   };
 
   private Type type;
@@ -75,8 +75,8 @@ public abstract class Actor {
    * @param deltaTime the number of seconds since the last tick
    */
   public void act(double deltaTime) {
-    x += dx * deltaTime;
-    y += dy * deltaTime;
+   x += dx * deltaTime;
+   y += dy * deltaTime;
   }
 
   /**
@@ -102,8 +102,8 @@ public abstract class Actor {
     return x;
   }
 
-  public void setX(int x) {
-    this.x = x;
+  public void setX(double d) {
+    this.x = d;
   }
 
   /**
@@ -115,8 +115,8 @@ public abstract class Actor {
     return y;
   }
 
-  public void setY(int y) {
-    this.y = y;
+  public void setY(double d) {
+    this.y = d;
   }
 
   /**

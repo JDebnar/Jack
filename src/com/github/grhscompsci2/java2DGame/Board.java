@@ -6,6 +6,8 @@ import javax.swing.SwingUtilities;
 
 import com.github.grhscompsci2.java2DGame.actors.Actor;
 import com.github.grhscompsci2.java2DGame.actors.Astronaut;
+import com.github.grhscompsci2.java2DGame.actors.Food;
+import com.github.grhscompsci2.java2DGame.actors.Snake;
 
 import java.awt.Graphics;
 import java.awt.image.*;
@@ -19,7 +21,7 @@ import java.awt.*;
  * they can draw and act here.
  */
 public class Board extends JPanel {
-  private final String BACKGROUND_FILE_NAME = "background.png";
+  private final String BACKGROUND_FILE_NAME = "background4.png";
   // This value would probably be stored elsewhere.
   final double GAME_HERTZ = 30.0;
   // Calculate how many ns each frame should take for our target game hertz.
@@ -36,6 +38,7 @@ public class Board extends JPanel {
   private int fps = 0;
   public boolean running = false;
   public static boolean paused = false;
+  private int boardMatrix[][] = new int[Utility.gameHeight / 22][Utility.gameWidth / 22];
 
   /**
    * Initialize the board
@@ -61,7 +64,8 @@ public class Board extends JPanel {
    */
   private void initBoard() {
     // Initialize all of your actors here: players, enemies, obstacles, etc.
-    Utility.castAndCrew.add(new Astronaut());
+    Utility.castAndCrew.add(new Snake());
+    Utility.castAndCrew.add(new Food());
   }
 
   /**
@@ -116,8 +120,8 @@ public class Board extends JPanel {
       }
     }
 
-    //g2d.setColor(Color.BLACK);
-    //g2d.drawString("FPS: " + fps, 5, 10);
+    // g2d.setColor(Color.BLACK);
+    // g2d.drawString("FPS: " + fps, 5, 10);
 
     frameCount++;
   }
@@ -159,7 +163,7 @@ public class Board extends JPanel {
         // Update the frames we got.
         int thisSecond = (int) (lastUpdateTime / 1000000000);
         if (thisSecond > lastSecondTime) {
-          //System.out.println("NEW SECOND " + thisSecond + " " + frameCount);
+          // System.out.println("NEW SECOND " + thisSecond + " " + frameCount);
           fps = frameCount;
           frameCount = 0;
           lastSecondTime = thisSecond;
@@ -204,6 +208,7 @@ public class Board extends JPanel {
     // Have all of your actor attributes act here.
     for (Actor actor : Utility.castAndCrew) {
       actor.act(deltaTime);
+      // setSnakePos(boardMatrix[])
     }
   }
 
@@ -223,43 +228,36 @@ public class Board extends JPanel {
    * small games.
    */
   public void checkCollisions() {
-    // check player against all other objects
-    /*
-     * Use this code as a sample. You will need an ArrayList of things to run into
-     * Rectangle r3 = actor.getBounds();
-     * for (Alien alien : aliens) {
-     * 
-     * Rectangle r2 = alien.getBounds();
-     * 
-     * if (r3.intersects(r2)) {
-     * 
-     * spaceship.setVisible(false);
-     * alien.setVisible(false);
-     * ingame = false;
-     * }
-     * }
-     * }
-     */
-    /*
-    if (eater.getX() < 0 || eater.getX() > Utility.gameWidth
-          || eater.getY() < 0 || eater.getY() > Utility.gameHeight) {
-          eater.setSnakePos(50,50);
-          eater.setDX(0);
-          eater.setDY(0);
-        JOptionPane.showMessageDialog(this,"Game Over");
-      }
 
-    Rectangle r1 = eater.getBounds();
-    Rectangle r3= apple.getBounds();
-    if( r1.intersects(r3)){
-      apple.setInvisible(true);
-      eater.grow();
-      apple = new Food();
-    */
+    /*
+     * if (eater.getX() < 0 || eater.getX() > Utility.gameWidth
+     * || eater.getY() < 0 || eater.getY() > Utility.gameHeight) {
+     * eater.setSnakePos(50,50);
+     * eater.setDX(0);
+     * eater.setDY(0);
+     * JOptionPane.showMessageDialog(this,"Game Over");
+     * }
+     * 
+     * Rectangle r1 = eater.getBounds();
+     * Rectangle r3= apple.getBounds();
+     * if( r1.intersects(r3)){
+     * apple.setInvisible(true);
+     * eater.grow();
+     * apple = new Food();
+     */
     Rectangle boundry = this.getBounds();
     for (Actor actor : Utility.castAndCrew) {
-      if (!boundry.contains(actor.getBounds())) {
-        actor.hitEdge();
+      if (!actor.isDead()) {
+        if (!boundry.contains(actor.getBounds())) {
+          actor.hitEdge();
+        }
+        for (Actor other : Utility.castAndCrew){
+          if (actor != other&&!other.isDead()) {
+            if (actor.getBounds().intersects(other.getBounds())) {
+              actor.hitActor(other);
+            }
+          }
+        }
       }
     }
   }
