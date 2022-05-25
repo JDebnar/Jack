@@ -24,8 +24,7 @@ public class Snake extends Actor {
 
   public void act(double deltaTime) {
     timer += deltaTime;
-    //if decreased, time goes faster.
-    if (timer > .2) {
+    if (timer > .3) {
       timer = 0;
       if (Utility.LEFT_ARROW) {
         setImage(leftImg);
@@ -52,7 +51,7 @@ public class Snake extends Actor {
 
       if (Utility.SPACE) {
         grow();
-     }
+      }
       if (nextBody != null) {
         nextBody.update(getX(), getY());
       }
@@ -60,7 +59,6 @@ public class Snake extends Actor {
       setY(getY() + getDY());
     }
     // super.act(deltaTime);
-    win();
   }
 
   public void setSnakePos(int i, int j) {

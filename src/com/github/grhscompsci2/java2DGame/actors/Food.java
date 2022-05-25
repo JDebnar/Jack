@@ -3,7 +3,7 @@ package com.github.grhscompsci2.java2DGame.actors;
 import com.github.grhscompsci2.java2DGame.Utility;
 
 public class Food extends Actor {
-    private final static String img = "orange.png";
+    private final static String img = "watermelon.png";
 
     
     

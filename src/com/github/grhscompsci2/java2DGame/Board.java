@@ -67,12 +67,12 @@ public class Board extends JPanel {
    * Holds if the game is paused
    */
   public static boolean paused = false;
-  private int boardMatrix[][] = new int[Utility.gameHeight / 22][Utility.gameWidth / 22];
-  /**
+   /**
    * The debug mode status. If this is set to true, bounding boxes will be
    * rendered.
    */
   public static final boolean debugMode = true;
+  private int boardMatrix[][] = new int[Utility.gameHeight / 22][Utility.gameWidth / 22];
 
   /**
    * Initialize the board
