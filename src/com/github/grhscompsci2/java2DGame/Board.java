@@ -101,7 +101,7 @@ public class Board extends JPanel {
     Utility.castAndCrew.add(new Snake());
     Utility.castAndCrew.add(new Food());
   }
-
+  
   /**
    * Returns the preferred size of the background. Used to set the starting size
    * of the JPanel window.
