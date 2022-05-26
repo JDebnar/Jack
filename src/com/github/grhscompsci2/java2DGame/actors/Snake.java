@@ -120,6 +120,14 @@ public class Snake extends Actor {
       Utility.addActor(new Food());
     }
     if(actor.getType() == Type.enemy){
+      //have to add to the x-value in order to make the head not collide with a body that spawned inside of it
+      //allows for the head to turn without dying.
+      if(getY()+11<actor.getY()||getX()+11<actor.getX()||getY()-11>actor.getY()||getX()-11>actor.getX()){
+
+      }else{
+      die();
+      Utility.addActor(new GameOver());
+      }
     }
   }
 }
