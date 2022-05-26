@@ -22,7 +22,6 @@ public class SnakeBody extends Actor {
 
     @Override
     public void hitEdge() {
-        // TODO Auto-generated method stub
 
     }
 

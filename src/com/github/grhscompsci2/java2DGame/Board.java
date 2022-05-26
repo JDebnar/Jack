@@ -21,7 +21,7 @@ import java.awt.*;
  * they can draw and act here.
  */
 public class Board extends JPanel {
-  private final String BACKGROUND_FILE_NAME = "background4.png";
+  private final String BACKGROUND_FILE_NAME = "background5.png";
   // This value would probably be stored elsewhere.
   final double GAME_HERTZ = 30.0;
   // Calculate how many ns each frame should take for our target game hertz.

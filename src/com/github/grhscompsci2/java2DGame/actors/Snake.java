@@ -19,12 +19,13 @@ public class Snake extends Actor {
   private double timer = 0;
 
   public Snake() {
-    super(rightImg, 111, 111, 22, Type.player);
+    super(rightImg, 33, 33, 22, Type.player);
   }
 
   public void act(double deltaTime) {
     timer += deltaTime;
-    if (timer > .3) {
+    //if decreased, time goes faster.
+    if (timer > .2) {
       timer = 0;
       if (Utility.LEFT_ARROW) {
         setImage(leftImg);
@@ -107,9 +108,12 @@ public class Snake extends Actor {
 
   @Override
   public void hitEdge() {
-    setSnakePos(50, 50);
+    setSnakePos(165, 165);
     setDX(0);
     setDY(0);
+    setImage("gameover.png");
+    die();
+
   }
 
   @Override
@@ -118,6 +122,8 @@ public class Snake extends Actor {
     if (actor.getType() == Type.food) {
       grow();
       Utility.addActor(new Food());
+    }
+    if(actor.getType() == Type.enemy){
     }
   }
 }
