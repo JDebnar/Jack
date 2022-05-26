@@ -27,9 +27,8 @@ public class SnakeBody extends Actor {
 
     @Override
     public void hitActor(Actor actor) {
-        // TODO Auto-generated method stub
-
-    }
+ 
+}
 
     public void addBody(SnakeBody tmp) {
         if(nextBody!=null){

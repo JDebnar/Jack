@@ -108,12 +108,8 @@ public class Snake extends Actor {
 
   @Override
   public void hitEdge() {
-    setSnakePos(165, 165);
-    setDX(0);
-    setDY(0);
-    setImage("gameover.png");
     die();
-
+    Utility.addActor(new GameOver());
   }
 
   @Override

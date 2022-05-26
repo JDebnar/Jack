@@ -52,6 +52,6 @@ public class Food extends Actor {
       if(actor.getType()==Type.player){
         setInvisible(true);
         die();
-      }  
+      }
     }
 }

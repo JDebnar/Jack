@@ -8,11 +8,13 @@ import com.github.grhscompsci2.java2DGame.actors.Actor;
 import com.github.grhscompsci2.java2DGame.actors.Astronaut;
 import com.github.grhscompsci2.java2DGame.actors.Food;
 import com.github.grhscompsci2.java2DGame.actors.Snake;
+import com.github.grhscompsci2.java2DGame.actors.Actor.Type;
 
 import java.awt.Graphics;
 import java.awt.image.*;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.prefs.BackingStoreException;
 import java.awt.*;
 
 /**
@@ -256,6 +258,15 @@ public class Board extends JPanel {
             if (actor.getBounds().intersects(other.getBounds())) {
               actor.hitActor(other);
             }
+          }
+        }
+      }
+    }
+    for (Actor actor : Utility.castAndCrew) {
+      if(actor.getType()==Type.player){
+        if(actor.isDead()){
+          for (Actor other : Utility.castAndCrew){
+              other.die();
           }
         }
       }
