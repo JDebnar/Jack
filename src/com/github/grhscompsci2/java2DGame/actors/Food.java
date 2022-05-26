@@ -52,6 +52,10 @@ public class Food extends Actor {
       if(actor.getType()==Type.player){
         setInvisible(true);
         die();
-      }
+      }else if(actor.getType()==Type.enemy){
+        die();
+        Utility.addActor(new Food());
     }
 }
+}
+

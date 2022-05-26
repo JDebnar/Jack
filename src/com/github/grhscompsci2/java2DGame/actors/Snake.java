@@ -52,7 +52,7 @@ public class Snake extends Actor {
 
       if (Utility.SPACE) {
         grow();
-      }
+     }
       if (nextBody != null) {
         nextBody.update(getX(), getY());
       }
@@ -60,6 +60,7 @@ public class Snake extends Actor {
       setY(getY() + getDY());
     }
     // super.act(deltaTime);
+    win();
   }
 
   public void setSnakePos(int i, int j) {
@@ -106,6 +107,14 @@ public class Snake extends Actor {
     return bodies;
   }
 
+  //224 bodies needed
+  public void win(){
+    if (bodies.size()==224){
+      Utility.addActor(new WinScreen());
+      die();
+    }
+    
+  }
   @Override
   public void hitEdge() {
     die();
