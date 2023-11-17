@@ -52,7 +52,7 @@ public class GameRunner {
     frame.pack();
     // set the title
 
-    frame.setTitle("FROGGER");
+    frame.setTitle("BASIC 2D GAME");
 
     // put the window in the center of the screen
     frame.setLocationRelativeTo(null);
@@ -88,12 +88,13 @@ public class GameRunner {
     // We only want to pay attention to key presses that happen when we have focused
     // on the JFrame
     InputMap inputMap = board.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
-    // Capture WASD and &uarr; &larr; &rarr; &darr;. Google "Virtual Key java" for a
-    // list of all VK codes. To add another keybinding, just trim off the "VK_" and
-    // put it where "W" is. If you only include the VK code, it will assume you want
-    // it to trigger when the key is pressed. The actionMapKey "up arrow" is just a
-    // string to define what we are doing. We are using them multiple times because
-    // we want to use the arrow keys and wasd to control the player
+    // Capture WASD and up arrow, left arrow, right arrow and down arrow. Google
+    // "Virtual Key java" for a list of all VK codes. To add another keybinding,
+    // just trim off the "VK_" and put it where "W" is. If you only include the VK
+    // code, it will assume you want it to trigger when the key is pressed. The
+    // actionMapKey "up arrow" is just a string to define what we are doing. We are
+    // using them multiple times because we want to use the arrow keys and wasd to
+    // control the player
     inputMap.put(KeyStroke.getKeyStroke("A"), "left arrow");
     inputMap.put(KeyStroke.getKeyStroke("D"), "right arrow");
     inputMap.put(KeyStroke.getKeyStroke("DOWN"), "down arrow");
